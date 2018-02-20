@@ -136,6 +136,6 @@ catch
 
 end{
 $Table = $Table | Where-Object {($_.Location -notin $AllDomainControllers) -and ($_.Location -ne $ForestRoot) -and ($_.Location -notin $ExclusionList)} 
-$Table | Sort Time | FT Time,User,Location,Domain,DC -AutoSize 
+$Table | Sort-Object Time | Format-Table Time,User,Location,Domain,DC -AutoSize 
 }
 }
