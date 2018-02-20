@@ -1,5 +1,5 @@
 ﻿Function New-GMSA {
-   <#
+    <#
 .SYNOPSIS
     Creation d'un groupe de service managé
 .DESCRIPTION
@@ -12,10 +12,10 @@
     [CmdletBinding()]
     [OutputType([int])]
     param(
-    [Parameter(Mandatory = $true)][string]$gMSAName,
-    [Parameter(Mandatory = $true)][string[]]$gMSAHostNames
+        [Parameter(Mandatory = $true)][string]$gMSAName,
+        [Parameter(Mandatory = $true)][string[]]$gMSAHostNames
     )
-      begin {
+    begin {
         # Define this variable a the beginning ans use in write-verbose '[$Scriptname] - '
         $ScriptName = (Get-Variable -name MyInvocation -Scope 0 -ValueOnly).Mycommand
         
