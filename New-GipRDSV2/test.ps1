@@ -19,9 +19,6 @@ New-VM -Name $VM_NAME -Template $VMTemplate -OSCustomizationSpec $OSCusSpec -VMH
 
 Start-VM -VM $VM_Name
 
-
-# We first verify that the guest customization has finished on on the new DC VM by using the below loops to look for the relevant events within vCenter. 
- 
 Write-Verbose -Message "Verifying that Customization for VM $VM_Name  has started ..." -Verbose
 	while($True)
 	{
@@ -59,3 +56,5 @@ Write-Verbose -Message "Customization of VM $VM_Name has started. Checking for C
         Start-Sleep -Seconds 5
 	}
 Write-Verbose -Message "Customization of VM $VM_Name Completed Successfully!" -Verbose
+
+Wait-Tools -VM $VM_NAME -TimeoutSeconds 300
