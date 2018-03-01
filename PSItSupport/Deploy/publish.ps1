@@ -1,0 +1,1 @@
+Publish-Module -Name PSItSupport -Repository PHSRepository -Verbose

@@ -1,15 +1,15 @@
 #
-# Manifeste de module pour le module « ITSupport »
+# Manifeste de module pour le module « PSItSupport »
 #
 # Généré par : LIENHARD Laurent
 #
-# Généré le : 22/02/2018
+# Généré le : 01/03/2018
 #
 
 @{
 
 # Module de script ou fichier de module binaire associé à ce manifeste
-RootModule = 'ITSupport.psm1'
+RootModule = 'PSItSupport.psm1'
 
 # Numéro de version de ce module.
 ModuleVersion = '0.0.1'
@@ -18,19 +18,19 @@ ModuleVersion = '0.0.1'
 # CompatiblePSEditions = @()
 
 # ID utilisé pour identifier de manière unique ce module
-GUID = 'fd082ca7-11e9-42ad-bff9-d8fb09c63e2c'
+GUID = '2b79bd59-4662-430a-b1ad-0091a699aeaf'
 
 # Auteur de ce module
 Author = 'LIENHARD Laurent'
 
 # Société ou fournisseur de ce module
-CompanyName = 'Inconnu'
+CompanyName = "Pôle de l'Habitat Social"
 
 # Déclaration de copyright pour ce module
 Copyright = '(c) 2018 LIENHARD Laurent. Tous droits réservés.'
 
 # Description de la fonctionnalité fournie par ce module
-Description = 'Some Function to IT Support'
+Description = "Ensembles de fonctions pour le support IT du GIP du Pôle de l'Habitat Social"
 
 # Version minimale du moteur Windows PowerShell requise par ce module
 # PowerShellVersion = ''

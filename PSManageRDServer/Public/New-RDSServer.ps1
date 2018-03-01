@@ -15,20 +15,16 @@ function New-RDSServer {
 .PARAMETER VCenter
     This parameter defines the name of the Virtual Center server.
 
-.PARAMETER AddToCollection
-    This parameter is set if the server will be added to a collection.
+.PARAMETER CustomFile
+    This parameter defines the name of the customization file to use.
 
-.PARAMETER Collection
-    This parameter defines the name of the collection from which the server will be added or deleted.
-
-.PARAMETER ConnectionBroker
-    This parameter defines the name of the collection management server.
-
+.PARAMETER TemplateFile
+    This parameter defines the name of the template to use.
 
 .EXAMPLE
-    C:\PS> New-RDSServer -Server SERVER -IP 10.1.1.1 -VCenter SRV-VCenter -Addtocollection -Collection TEST -ConnectionBroker SRV-BROKER
+    C:\PS> New-RDSServer -Server SERVER -IP 10.1.1.1 -VCenter SRV-VCenter -TemplateFile MyTemplate -CustomFile MyCustom
     
-    This command will create a server "SERVER" with the IP address "10.1.1.1" and add it to the collection "TEST"
+    This command will create a server "SERVER" with the IP address "10.1.1.1" based on the template "MyTemplate" and customized by the file "MyCustom"
 
 .NOTES
     Author: LIENHARD Laurent
@@ -39,9 +35,8 @@ function New-RDSServer {
         [Parameter(Mandatory = $true)][string]$Server,
         [Parameter(Mandatory = $true)][string]$IP,
         [Parameter(Mandatory = $true)][string]$VCenter,
-        [Parameter(Mandatory = $false)][switch]$AddToCollection,
-        [Parameter(Mandatory = $false)][string]$Collection = "BUREAU GIPV2",
-        [Parameter(Mandatory = $false)][string]$ConnectionBroker
+        [Parameter(Mandatory = $true)][string]$CustomFile,
+        [Parameter(Mandatory = $true)][string]$TemplateFile
     )
     
     begin {
@@ -89,11 +84,6 @@ function New-RDSServer {
         #region <Définition des parametres>
         $datastore = (Get-Datastore | Sort-Object -Property FreeSpaceGB -Descending | Select-Object -First 1).name
         Write-verbose "[$Scriptname] - The datastore $Datastore will be used..."
-        
-        if ($Collection -eq "BUREAU GIPV2") {
-            $CustomFile = 'Deploy_RDSGIP_V2'
-            $TemplateFile = 'RDSGIPV2'
-        }
 
         Write-verbose "[$Scriptname] - Creation of the temporary custom file..."
         if (Get-OSCustomizationSpec -Name temp1 -ErrorAction SilentlyContinue) {
@@ -162,5 +152,3 @@ function New-RDSServer {
     end {
     }
 }
-
-New-RDSServer -Server SRV-RDS22 -IP 10.3.50.24 -VCenter srv-vcgip -Verbose -ConnectionBroker srv-rdsmgmt01 -Collection "BUREAU GIPV2"

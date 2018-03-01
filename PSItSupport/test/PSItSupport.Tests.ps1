@@ -1,4 +1,4 @@
-$ModuleManifestName = 'ITSupport.psd1'
+$ModuleManifestName = 'PSItSupport.psd1'
 $ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
 
 Describe 'Module Manifest Tests' {
