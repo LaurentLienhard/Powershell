@@ -54,6 +54,7 @@ function New-RDSServer {
         Import-Module -Name VMware.VimAutomation.Core -Verbose:$false
         $cred = Get-Credential -Message "Admin VI Account"
         try {
+            Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false
             Connect-VIServer -Server $VCenter -Credential $cred
         }
         catch {
@@ -99,13 +100,15 @@ function New-RDSServer {
         
         $VMHost = Get-Cluster | Get-VMHost | Get-Random
         Write-verbose "[$Scriptname] - The host server $VMHost will be used..."
+
+        $DCServer = Get-ADDomainController -Discover -Service "GlobalCatalog"
         #enregion
 
         #region <Creation de la VM>
         write-verbose "[$Scriptname] - Creating the $Server account in the AD..."
-        New-ADComputer -Name $Server -SamAccountName $Server -Path "OU=BUREAU-GIP2,OU=Serveurs RDS,OU=GIP,OU=PHS,DC=netintra,DC=local" -Server SRV-AD101 -Credential $cred
+        New-ADComputer -Name $Server -SamAccountName $Server -Path "OU=BUREAU-GIP2,OU=Serveurs RDS,OU=GIP,OU=PHS,DC=netintra,DC=local" -Server $DCServer -Credential $cred
         write-verbose "[$Scriptname] - Adding the $Server server in the AD group for the MSA..."
-        Start-Sleep -Second 30
+        Start-Sleep -Second 10
         Add-ADGroupMember -Identity ServeursRDS -Members $Server$
         
         Write-verbose "[$Scriptname] - Creation of the VM..."

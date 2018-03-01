@@ -1,0 +1,9 @@
+MyModuleDeployment:
+  Author: ''
+  Source:
+    - 'C:\Users\laurent.lienhard\OneDrive\Documents\01-DEV\Powershell\PSItSupport'
+  Destination:
+    - 'C:\Users\laurent.lienhard\OneDrive\Documents\WindowsPowerShell\Modules\PSItSupport'
+  DeploymentType: Filesystem
+  Options:
+    Mirror: True

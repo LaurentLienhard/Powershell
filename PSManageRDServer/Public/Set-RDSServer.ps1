@@ -109,5 +109,3 @@ function Set-RDSServer {
         Disconnect-VIServer -Server $VCenter -Confirm:$false -Debug:$false
     }
 }
-
-Set-RDSServer -Server srv-rds22 -RemoveFromCollection -Collection "BUREAU GIPV2" -VCenter srv-vcgip -Cred (Get-Credential) -Verbose -ConnectionBroker srv-rdsmgmt01
