@@ -21,8 +21,11 @@ function New-RDSServer {
 .PARAMETER TemplateFile
     This parameter defines the name of the template to use.
 
+.PARAMETER Cred
+    This parameter defines the credentials for connecting to the virtual center server.
+
 .EXAMPLE
-    C:\PS> New-RDSServer -Server SERVER -IP 10.1.1.1 -VCenter SRV-VCenter -TemplateFile MyTemplate -CustomFile MyCustom
+    C:\PS> New-RDSServer -Server SERVER -IP 10.1.1.1 -VCenter SRV-VCenter -TemplateFile MyTemplate -CustomFile MyCustom -cred (get-credential)
     
     This command will create a server "SERVER" with the IP address "10.1.1.1" based on the template "MyTemplate" and customized by the file "MyCustom"
 
@@ -52,10 +55,9 @@ function New-RDSServer {
 
         Import-Module ActiveDirectory -Verbose:$false
         Import-Module -Name VMware.VimAutomation.Core -Verbose:$false
-        $cred = Get-Credential -Message "Admin VI Account"
         try {
             Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false
-            Connect-VIServer -Server $VCenter -Credential $cred
+            Connect-VIServer -Server $global:DefaultVIServer -Session $global:DefaultVIServer.SessionId -Force
         }
         catch {
             Write-Warning "[$Scriptname] - Error connecting to VCenter end of script"
@@ -83,6 +85,9 @@ function New-RDSServer {
     
     process {
         #region <Définition des parametres>
+
+        $Server = $Server.ToUpper()
+
         $datastore = (Get-Datastore | Sort-Object -Property FreeSpaceGB -Descending | Select-Object -First 1).name
         Write-verbose "[$Scriptname] - The datastore $Datastore will be used..."
 
@@ -108,7 +113,7 @@ function New-RDSServer {
         write-verbose "[$Scriptname] - Creating the $Server account in the AD..."
         New-ADComputer -Name $Server -SamAccountName $Server -Path "OU=BUREAU-GIP2,OU=Serveurs RDS,OU=GIP,OU=PHS,DC=netintra,DC=local" -Server $DCServer -Credential $cred
         write-verbose "[$Scriptname] - Adding the $Server server in the AD group for the MSA..."
-        Start-Sleep -Second 10
+        Start-Sleep -Second 30
         Add-ADGroupMember -Identity ServeursRDS -Members $Server$
         
         Write-verbose "[$Scriptname] - Creation of the VM..."

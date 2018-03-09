@@ -47,8 +47,6 @@ function Set-RDSServer {
         [Parameter(Mandatory = $false)][switch]$RemoveFromCollection,
         [Parameter(Mandatory = $false)][string]$Collection,
         [Parameter(Mandatory = $true)][string]$ConnectionBroker,
-        [ValidateNotNull()][System.Management.Automation.PSCredential][System.Management.Automation.Credential()]
-        [Parameter(Mandatory = $true)]$Cred = [System.Management.Automation.PSCredential]::Empty,
         [Parameter(Mandatory = $true)][string]$VCenter
     )
     
@@ -74,7 +72,8 @@ function Set-RDSServer {
     process {
 
         try {
-            Connect-VIServer -Server $VCenter -Credential $cred -Debug:$false
+            Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false
+            Connect-VIServer -Server $global:DefaultVIServer -Session $global:DefaultVIServer.SessionId -Force
         }
         catch {
             Write-Warning "[$Scriptname] - Erreur de connexion au VCenter fin du script"
@@ -106,6 +105,5 @@ function Set-RDSServer {
     }
     
     end {
-        Disconnect-VIServer -Server $VCenter -Confirm:$false -Debug:$false
     }
 }

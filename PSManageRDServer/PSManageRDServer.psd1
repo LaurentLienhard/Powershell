@@ -12,7 +12,7 @@
 RootModule = 'PSManageRDServer.psm1'
 
 # Numéro de version de ce module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.5'
 
 # Éditions PS prises en charge
 # CompatiblePSEditions = @()
