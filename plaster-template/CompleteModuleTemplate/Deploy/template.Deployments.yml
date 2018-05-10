@@ -1,0 +1,9 @@
+MyModuleDeployment:
+  Author: 'LIENHARD Laurent'
+  Source:
+    - 'C:\Users\laurent.lienhard\OneDrive\Documents\01-DEV\VSTS\$($PLASTER_PARAM_ModuleName)'
+  Destination:
+    - 'C:\Users\laurent.lienhard\OneDrive\Documents\WindowsPowerShell\Modules\$($PLASTER_PARAM_ModuleName)'
+  DeploymentType: Filesystem
+  Options:
+    Mirror: True
