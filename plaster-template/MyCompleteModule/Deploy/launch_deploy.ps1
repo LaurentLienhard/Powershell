@@ -8,6 +8,6 @@ if (!(Get-Module -ListAvailable -Name PSDeploy)) {
 Import-Module PSDeploy
 
 $ModuleName = "<%= $PLASTER_PARAM_ModuleName %>"
-$source  = $env:OneDrive + '\Documents\01-DEV\VSTS\' + $ModuleName  + '\Deploy\Deploy.ps1'
+$source  = 'C:\Users\Laurent.Lienhard\OneDrive - PoleHabitatStrasbourg\01-Devs\Powershell\' + $ModuleName  + '\Deploy\Deploy.ps1'
 
 Invoke-PSDeploy -Path $source -tag $Tag -Force -Verbose

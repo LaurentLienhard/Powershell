@@ -1,8 +1,8 @@
 $source = ""
 $destination_dev =""
 $ModuleName = "<%= $PLASTER_PARAM_ModuleName %>"
-$source  = $env:OneDrive + '\Documents\01-DEV\VSTS\' + $ModuleName 
-$destination_dev = $env:OneDrive + '\Documents\WindowsPowerShell\Modules\' + $ModuleName
+$source  = 'C:\Users\Laurent.Lienhard\OneDrive - PoleHabitatStrasbourg\01-Devs\Powershell\' + $ModuleName 
+$destination_dev = 'C:\Users\Laurent.Lienhard\OneDrive - PoleHabitatStrasbourg\WindowsPowerShell\Modules\' + $ModuleName
 
 
 Deploy ExampleDeployment {
@@ -17,3 +17,4 @@ Deploy ExampleDeployment {
         }
     }
 }
+

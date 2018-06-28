@@ -1,2 +1,2 @@
 Import-Module PSDeploy
-Invoke-PSDeployment -Path .\Deployments.yml -Force
+Invoke-PSDeployment -Path .\Deployments.yml -Force -Verbose

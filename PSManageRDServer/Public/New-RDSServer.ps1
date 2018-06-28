@@ -3,7 +3,7 @@ function New-RDSServer {
 .SYNOPSIS
     .
 .DESCRIPTION
-    This script allows you to modify the attributes of an RDS server. 
+    This script allows you to modify the attributes of an RDS server.
     Add the server to a collection, remove the server from a collection ....
 
 .PARAMETER Server
@@ -26,12 +26,12 @@ function New-RDSServer {
 
 .EXAMPLE
     C:\PS> New-RDSServer -Server SERVER -IP 10.1.1.1 -VCenter SRV-VCenter -TemplateFile MyTemplate -CustomFile MyCustom -cred (get-credential)
-    
+
     This command will create a server "SERVER" with the IP address "10.1.1.1" based on the template "MyTemplate" and customized by the file "MyCustom"
 
 .NOTES
     Author: LIENHARD Laurent
-    Date  : February 28, 2018  
+    Date  : February 28, 2018
 #>
     [CmdletBinding()]
     param (
@@ -41,12 +41,12 @@ function New-RDSServer {
         [Parameter(Mandatory = $true)][string]$CustomFile,
         [Parameter(Mandatory = $true)][string]$TemplateFile
     )
-    
+
     begin {
         Clear-Host
 
         $ScriptName = (Get-Variable -name MyInvocation -Scope 0 -ValueOnly).Mycommand
-        write-verbose "[$Scriptname] - BEGIN PROCESS" 
+        write-verbose "[$Scriptname] - BEGIN PROCESS"
 
         if ($AddToCollection -and (!($Collection) -or !($ConnectionBroker))) {
             Write-Warning "AddToCollection must be associated with a collection name and a Connection Broker"
@@ -63,8 +63,8 @@ function New-RDSServer {
             Write-Warning "[$Scriptname] - Error connecting to VCenter end of script"
             Break
         }
-        
-        
+
+
         #region <Validation des variable>
         Write-verbose "[$Scriptname] - Checking the availability of the IP address : $ip ..."
         $Ping = New-Object System.Net.Networkinformation.ping
@@ -73,16 +73,16 @@ function New-RDSServer {
             Write-Warning "$IP is in use!"
             Break
         }
-        
+
         Write-verbose "[$Scriptname] - Verifying the availability of the VM name : $Server..."
         if (Get-VM -Name $Server -ErrorAction SilentlyContinue) {
             Write-Warning "$Server is in use!"
-            Break                    
+            Break
         }
         #endregion
 
     }
-    
+
     process {
         #region <Définition des parametres>
 
@@ -96,13 +96,13 @@ function New-RDSServer {
             Remove-OSCustomizationSpec -OSCustomizationSpec temp1 -Confirm:$false
         }
         $OSCusSpec = Get-OSCustomizationSpec -Name $CustomFile | New-OSCustomizationSpec -Name 'temp1' -Type NonPersistent
-        
+
         Write-verbose "[$Scriptname] - Adding the Ip configuration to the temporary custom file..."
         Get-OSCustomizationSpec $OSCusSpec | Get-OSCustomizationNicMapping | Set-OSCustomizationNicMapping -IpMode UseStaticIp -IpAddress $IP -SubnetMask '255.255.255.0' -DefaultGateway '10.3.50.254' -Dns '10.1.50.10', '10.1.50.11'
 
         $VMTemplate = Get-Template -Name $TemplateFile
         Write-verbose "[$Scriptname] - Using the template $VMtemplate..."
-        
+
         $VMHost = Get-Cluster | Get-VMHost | Get-Random
         Write-verbose "[$Scriptname] - The host server $VMHost will be used..."
 
@@ -110,53 +110,53 @@ function New-RDSServer {
         #enregion
 
         #region <Creation de la VM>
-        write-verbose "[$Scriptname] - Creating the $Server account in the AD..."
+<#         write-verbose "[$Scriptname] - Creating the $Server account in the AD..."
         New-ADComputer -Name $Server -SamAccountName $Server -Path "OU=BUREAU-GIP2,OU=Serveurs RDS,OU=GIP,OU=PHS,DC=netintra,DC=local" -Server $DCServer -Credential $cred
         write-verbose "[$Scriptname] - Adding the $Server server in the AD group for the MSA..."
         Start-Sleep -Second 30
-        Add-ADGroupMember -Identity ServeursRDS -Members $Server$
-        
+        Add-ADGroupMember -Identity ServeursRDS -Members $Server$ #>
+
         Write-verbose "[$Scriptname] - Creation of the VM..."
         New-VM -Name $Server -Template $VMTemplate -OSCustomizationSpec $OSCusSpec -VMHost $VMHost -Datastore $datastore
         Write-verbose "[$Scriptname] - Starting the VM..."
         Start-VM -VM $Server
-        
+
         Write-Verbose -Message "Verifying that Customization for VM $Server  has started ..."
         while ($True) {
             $DCvmEvents = Get-VIEvent -Entity $Server
             $DCstartedEvent = $DCvmEvents | Where-Object { $_.GetType().Name -eq "CustomizationStartedEvent" }
-         
+
             if ($DCstartedEvent) {
-                break	
+                break
             }
-         
+
             else {
                 Start-Sleep -Seconds 5
             }
         }
-         
+
         Write-Verbose -Message "Customization of VM $Server has started. Checking for Completed Status......."
         while ($True) {
             $DCvmEvents = Get-VIEvent -Entity $Server
             $DCSucceededEvent = $DCvmEvents | Where-Object { $_.GetType().Name -eq "CustomizationSucceeded" }
             $DCFailureEvent = $DCvmEvents | Where-Object { $_.GetType().Name -eq "CustomizationFailed" }
-         
+
             if ($DCFailureEvent) {
                 Write-Warning -Message "Customization of VM $Server failed"
-                return $False	
+                return $False
             }
-         
+
             if ($DCSucceededEvent) {
                 break
             }
             Start-Sleep -Seconds 5
         }
         Write-Verbose -Message "Customization of VM $Server Completed Successfully!"
-        
+
         Wait-Tools -VM $Server -TimeoutSeconds 300
         #endregion
     }
-    
+
     end {
     }
 }

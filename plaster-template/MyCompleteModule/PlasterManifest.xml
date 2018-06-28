@@ -48,7 +48,7 @@
   </parameters>
 
   <content>
-    <newModuleManifest destination='${PLASTER_PARAM_ModuleName}\src\${PLASTER_PARAM_ModuleName}.psd1'
+    <newModuleManifest destination='${PLASTER_PARAM_ModuleName}\${PLASTER_PARAM_ModuleName}.psd1'
         moduleVersion='$PLASTER_PARAM_ModuleVersion'
         rootModule='${PLASTER_PARAM_ModuleName}.psm1'
         author='$PLASTER_PARAM_ModuleAuthor'
@@ -59,15 +59,15 @@
         openInEditor="true"/>
 
     <!-- Please see file contents for additional tokenization base on Plaster manifest answers. -->
-    <templateFile source='.\src\template.psm1' destination='${PLASTER_PARAM_ModuleName}\src\${PLASTER_PARAM_ModuleName}.psm1'/>
+    <templateFile source='.\template.psm1' destination='${PLASTER_PARAM_ModuleName}\${PLASTER_PARAM_ModuleName}.psm1'/>
 
     <message>&#10;&#10;Scaffolding your PowerShell Module, please stay awesome...&#10;&#10;&#10;</message>
     <message> Creating you folders for module: $PLASTER_PARAM_ModuleName </message>
 
-    <file destination='${PLASTER_PARAM_ModuleName}\src\Functions\Public\' source='' />
-    <templateFile source='.\src\Functions\Public\.gitkeep' destination='${PLASTER_PARAM_ModuleName}\src\Functions\Public\.gitkeep' />
-    <file destination='${PLASTER_PARAM_ModuleName}\src\Functions\Private\' source='' />
-    <templateFile source='.\src\Functions\Private\.gitkeep' destination='${PLASTER_PARAM_ModuleName}\src\Functions\Private\.gitkeep' />
+    <file destination='${PLASTER_PARAM_ModuleName}\Public\' source='' />
+    <templateFile source='.\Public\.gitkeep' destination='${PLASTER_PARAM_ModuleName}\Public\.gitkeep' />
+    <file destination='${PLASTER_PARAM_ModuleName}\Private\' source='' />
+    <templateFile source='.\Private\.gitkeep' destination='${PLASTER_PARAM_ModuleName}\Private\.gitkeep' />
 
     <templateFile source='ReadMe.md' destination='${PLASTER_PARAM_ModuleName}\ReadMe.md' />
 
