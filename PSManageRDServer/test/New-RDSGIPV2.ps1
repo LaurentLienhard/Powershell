@@ -15,7 +15,7 @@ Import-Module VMware.VimAutomation.Core
 
 try {
     Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false
-    Connect-VIServer -Server $VCenter -Credential $cred
+    Connect-VIServer -Server $VCenter -Credential $Cred
     }
     catch {
     Write-Warning "[$Scriptname] - Error connecting to VCenter end of script"
@@ -24,7 +24,7 @@ try {
 
 New-RDSServer -Server $server -IP $IP -VCenter $VCenter -CustomFile $CustomFile -TemplateFile $TemplateFile
 
-        
+
 
 
 if (Get-VM -Name $Server) {
@@ -46,8 +46,8 @@ if (Get-VM -Name $Server) {
         $action = New-ScheduledTaskAction� "C:\Scripts\RemoveLogNsClient.bat"
         $trigger = New-ScheduledTaskTrigger -At 23:15 -Daily
         $principal = New-ScheduledTaskPrincipal -UserID NETINTRA\msaRDSService$ -LogonType Password
-        Register-ScheduledTask RemoveLogNsclient �Action $action �Trigger $trigger �Principal $principal -TaskPath \Maintenance -Force        
- 
+        Register-ScheduledTask RemoveLogNsclient �Action $action �Trigger $trigger �Principal $principal -TaskPath \Maintenance -Force
+
         $action = New-ScheduledTaskAction� "C:\Tools\Defrag_DB_WindowsSearch.bat"
         $trigger = New-ScheduledTaskTrigger -At 23:15 -Daily
         $principal = New-ScheduledTaskPrincipal -UserID NETINTRA\msaRDSService$ -LogonType Password

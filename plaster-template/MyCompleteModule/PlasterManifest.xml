@@ -74,6 +74,8 @@
     <message> Setting pester settings for: $PLASTER_PARAM_ModuleName </message>
     <file condition='$PLASTER_PARAM_ProjectPester -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\tests\' source='' />
     <templateFile source='.\tests\Manifest.Tests.ps1' destination='${PLASTER_PARAM_ModuleName}\tests\Manifest.Tests.ps1'/>
+    <templateFile source='.\tests\invoke-pester.ps1' destination='${PLASTER_PARAM_ModuleName}\tests\invoke-pester.ps1'/>
+    <templateFile source='.\tests\Invoke-ScriptAnalyser.ps1' destination='${PLASTER_PARAM_ModuleName}\tests\Invoke-ScriptAnalyser.ps1'/>
 
     <message> Setting class settings for: $PLASTER_PARAM_ModuleName </message>
     <file condition='$PLASTER_PARAM_Class -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\Class\' source='' />
@@ -82,6 +84,7 @@
     <file condition='$PLASTER_PARAM_Deploy -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\Deploy\' source='' />
     <templateFile source='.\Deploy\Deploy.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\Deploy.ps1'/>
     <templateFile source='.\Deploy\launch_deploy.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\launch_deploy.ps1'/>
+    <templateFile source='.\Deploy\publish.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\publish.ps1'/>
 
     <message> Setting editor workspace settings for: $PLASTER_PARAM_Editor </message>
     <file condition="($PLASTER_PARAM_Editor -eq 'VSCode')"
