@@ -1,9 +1,0 @@
-MyModuleDeployment:
-  Author: ''
-  Source:
-    - 'C:\Users\laurent.lienhard\OneDrive\Documents\01-DEV\Powershell\PSManageRDServer'
-  Destination:
-    - 'C:\Users\laurent.lienhard\OneDrive\Documents\WindowsPowerShell\Modules\PSManageRDServer'
-  DeploymentType: Filesystem
-  Options:
-    Mirror: True
