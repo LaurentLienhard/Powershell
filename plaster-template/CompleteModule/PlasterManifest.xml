@@ -64,6 +64,9 @@
     <message>&#10;&#10;Scaffolding your PowerShell Module, please stay awesome...&#10;&#10;&#10;</message>
     <message> Creating you folders for module: $PLASTER_PARAM_ModuleName </message>
 
+    <file destination='${PLASTER_PARAM_ModuleName}\Output\' source='' />
+    <file destination='${PLASTER_PARAM_ModuleName}\Test\' source='' />
+
     <file destination='${PLASTER_PARAM_ModuleName}\Sources\Public\' source='' />
     <templateFile source='.\Sources\Public\.gitkeep' destination='${PLASTER_PARAM_ModuleName}\Sources\Public\.gitkeep' />
     <file destination='${PLASTER_PARAM_ModuleName}\Sources\Private\' source='' />
@@ -86,7 +89,7 @@
 
     <message> Setting build settings for: $PLASTER_PARAM_ModuleName </message>
     <file condition='$PLASTER_PARAM_Build -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\Build\' source='' />
-    <templateFile source='.\Build\Default.ps1' destination='${PLASTER_PARAM_ModuleName}\Build\Default.ps1'/>
+    <templateFile source='.\Build\psakefile.ps1' destination='${PLASTER_PARAM_ModuleName}\Build\psakefile.ps1'/>
 
     <message> Setting editor workspace settings for: $PLASTER_PARAM_Editor </message>
     <file condition="($PLASTER_PARAM_Editor -eq 'VSCode')"
