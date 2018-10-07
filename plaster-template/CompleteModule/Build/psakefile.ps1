@@ -14,7 +14,7 @@ Pop-Location -StackName BuildScript
 
 
 
-Write-Verbose -Message "Working in $SourceFolder" -verbose
+Write-Verbose -Message "Working in $SourceFolder"
 
 $Module = Get-ChildItem -Path $SourceFolder -Filter *.psd1 -Recurse |
 
@@ -42,7 +42,7 @@ Copy-Item -Path $Module.FullName -Destination $OutputManifest -Force
 
 
 
-Write-Verbose -Message "Attempting to work with $DestinationModule" -verbose
+Write-Verbose -Message "Attempting to work with $DestinationModule"
 
 
 
@@ -58,7 +58,16 @@ $PublicFunctions = Get-ChildItem -Path $SourceFolder -Include 'Public', 'Externa
 
 $PrivateFunctions = Get-ChildItem -Path $SourceFolder -Include 'Private', 'Internal' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
 
+$PublicClass = Get-ChildItem -Path $SourceFolder -Include 'Class', 'Classe' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
 
+
+Foreach ($Class in $PublicClass) {
+
+    Get-Content -Path $Class.FullName | Add-Content -Path $DestinationModule
+
+}
+
+Write-Verbose -Message "Found $($PublicClass.Count) Public Class and added them to the psm1."
 
 if ($PublicFunctions -or $PrivateFunctions) {
 
@@ -97,7 +106,6 @@ Foreach ($PublicFunction in $PublicFunctions) {
 Write-Verbose -Message "Found $($PublicFunctions.Count) Public functions and added them to the psm1."
 
 
-
 $PublicFunctionNames = $PublicFunctions |
 
     Select-String -Pattern 'Function (\w+-\w+) {' -AllMatches |
@@ -111,15 +119,19 @@ $PublicFunctionNames = $PublicFunctions |
 Write-Verbose -Message "Making $($PublicFunctionNames.Count) functions available via Export-ModuleMember"
 
 
-
 "Export-ModuleMember -Function $($PublicFunctionNames -join ',')" | Add-Content -Path $DestinationModule
 
 $Null = Get-Command -Module Configuration
 
 Update-Metadata -Path $OutputManifest -PropertyName FunctionsToExport -Value $PublicFunctionNames
 
+Write-Verbose "Deploy Module"
+$source  =   $SourceFolder +'\Deploy\Deploy.ps1'
 
+Invoke-PSDeploy -Path $Source -tag "DEV" -Force
 
+Write-Verbose "Pester Module"
 Invoke-Pester -Script $SourceFolder -CodeCoverage $DestinationModule
 
+Write-Verbose "ScriptAnalyser Module"
 Invoke-ScriptAnalyzer -Path $DestinationModule
