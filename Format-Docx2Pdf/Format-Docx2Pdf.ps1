@@ -1,3 +1,5 @@
+function Format-Docx2Pdf {
+    
 #Author: Matt Bungard / bungard at g-mail d com
 
 #
@@ -7,26 +9,24 @@
 #http://stackoverflow.com/questions/26737239/powershell-add-a-new-document-to-exisitng-word-file-with-page-number-of-2
 
 
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $False)][string]$FileNamePattern = ".*de bail.*(0\d{9})",
+    [Parameter(Mandatory = $False)][string]$pageLength = 1,
+    [Parameter(Mandatory = $true)][string]$InputFile ,
+    [Parameter(Mandatory = $False)][string]$outputPath = $env:temp + "\Outputdir\"
+)
+    
 
-## -- Settings --
+if (Test-Path $outputPath) {
+    Remove-Item -Path $outputPath -Recurse -Force -Confirm:$false
+}
+New-Item -Path $outputPath -ItemType Directory -Force -Confirm:$false
 
-$fileNamePattern = ".*de bail.*(0\d{9})"
-
-$pageLength = 1
-
-
-
-$inputFile = "C:\temp\18070230.doc"
-
-$outputPath = "c:\temp\outputDir\" #End the path with a slash
-
-
-
-## -- End Settings
 
 $word = New-Object -ComObject word.application
 
-$word.Visible = $False
+$word.Visible = $True
 
 
 
@@ -40,29 +40,28 @@ $rngPage = $doc.Range()
 
 
 
-for($i=1;$i -le $pages; $i+=$pageLength)
-
+for ($i = 1; $i -le $pages; $i += $pageLength)
 {
 
     [Void]$word.Selection.GoTo([Microsoft.Office.Interop.Word.WdGoToItem]::wdGoToPage,
 
-                         [Microsoft.Office.Interop.Word.WdGoToDirection]::wdGoToAbsolute,
+        [Microsoft.Office.Interop.Word.WdGoToDirection]::wdGoToAbsolute,
 
-                         $i #Starting Page
+        $i #Starting Page
 
-                         )
+    )
 
-        $rngPage.Start = $word.Selection.Start
+    $rngPage.Start = $word.Selection.Start
 
 
 
     [Void]$word.Selection.GoTo([Microsoft.Office.Interop.Word.WdGoToItem]::wdGoToPage,
 
-                         [Microsoft.Office.Interop.Word.WdGoToDirection]::wdGoToAbsolute,
+        [Microsoft.Office.Interop.Word.WdGoToDirection]::wdGoToAbsolute,
 
-                         $i+$pageLength #Next page Number
+        $i + $pageLength #Next page Number
 
-                         )
+    )
 
     $rngPage.End = $word.Selection.Start
 
@@ -100,7 +99,7 @@ for($i=1;$i -le $pages; $i+=$pageLength)
 
     $word.Selection.Paste() # Now we have our new page on a new doc
 
-    $word.Selection.EndKey(6,0) #Move to the end of the file
+    $word.Selection.EndKey(6, 0) #Move to the end of the file
 
     $word.Selection.TypeBackspace() #Seems to grab an extra section/page break
 
@@ -112,8 +111,7 @@ for($i=1;$i -le $pages; $i+=$pageLength)
 
     $regex = [Regex]::Match($rngPage.Text, $fileNamePattern)
 
-    if($regex.Success)
-
+    if ($regex.Success)
     {
 
         $id = $regex.Groups[1].Value
@@ -121,7 +119,6 @@ for($i=1;$i -le $pages; $i+=$pageLength)
     }
 
     else
-
     {
 
         $id = "patternNotFound" + $i 
@@ -140,3 +137,5 @@ for($i=1;$i -le $pages; $i+=$pageLength)
 
 [gc]::collect() 
 [gc]::WaitForPendingFinalizers()
+
+}
