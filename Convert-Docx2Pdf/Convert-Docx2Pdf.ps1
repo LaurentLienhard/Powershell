@@ -17,16 +17,17 @@ param (
     [Parameter(Mandatory = $False)][string]$outputPath = $env:temp + "\Outputdir\"
 )
     
-
+BEGIN {
 if (Test-Path $outputPath) {
     Remove-Item -Path $outputPath -Recurse -Force -Confirm:$false
 }
 New-Item -Path $outputPath -ItemType Directory -Force -Confirm:$false
+}
 
-
+PROCESS {
 $word = New-Object -ComObject word.application
 
-$word.Visible = $True
+$word.Visible = $False
 
 
 
@@ -76,15 +77,9 @@ for ($i = 1; $i -le $pages; $i += $pageLength)
     $marginRight = $word.Selection.PageSetup.RightMargin
 
 
-
-
-
-
-
     $rngPage.Copy()
 
     $newDoc = $word.Documents.Add()
-
 
 
     $word.Selection.PageSetup.TopMargin = $marginTop 
@@ -134,8 +129,10 @@ for ($i = 1; $i -le $pages; $i += $pageLength)
 
     $newDoc.close([ref]$False) 
 }
+}
 
+END {
 [gc]::collect() 
 [gc]::WaitForPendingFinalizers()
-
+}
 }
