@@ -1,4 +1,4 @@
-function Format-Docx2Pdf {
+function Convert-Docx2Pdf {
     
 #Author: Matt Bungard / bungard at g-mail d com
 
