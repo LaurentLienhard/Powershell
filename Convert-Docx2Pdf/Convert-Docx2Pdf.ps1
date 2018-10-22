@@ -1,14 +1,5 @@
 function Convert-Docx2Pdf {
     
-#Author: Matt Bungard / bungard at g-mail d com
-
-#
-
-#Pull bits from various sources, if you've been exluded let me know and I'll cite accordingly
-
-#http://stackoverflow.com/questions/26737239/powershell-add-a-new-document-to-exisitng-word-file-with-page-number-of-2
-
-
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $False)][string]$FileNamePattern = ".*de bail.*(0\d{9})",
