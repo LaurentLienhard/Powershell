@@ -1,15 +1,13 @@
-$Public = @(Get-ChildItem -Path $PSScriptRoot\Sources\Public\*.ps1  -ErrorAction SilentlyContinue) 
-$Private = @(Get-ChildItem -Path $PSScriptRoot\Sources\Private\*.ps1 -ErrorAction SilentlyContinue) 
+$PublicFunctions = @(Get-ChildItem -Path $PSScriptRoot\Sources\Public\*.ps1  -ErrorAction SilentlyContinue | Select-object -Expand FullName) 
+$PrivateFunctions = @(Get-ChildItem -Path $PSScriptRoot\Sources\Private\*.ps1 -ErrorAction SilentlyContinue | Select-Object -Expand FullName) 
+$Classes = @(Get-ChildItem -Path $PSScriptRoot\Sources\Class\*.ps1 -ErrorAction SilentlyContinue | Select-Object -Expand FullName) 
  
-#Dot source the files 
-Foreach ($import in @($Public + $Private)) { 
+ #Dot source the files 
+Foreach ($import in @($PublicFunctions + $PrivateFunctions + $Classes)) { 
     TRY { 
-        . $import.fullname 
+        . $import
     } 
     CATCH { 
-        Write-Error -Message "Failed to import function $($import.fullname): $_" 
+        Write-Error -Message "Failed to import function $($import): $_" 
     } 
 } 
- 
-# Export all the functions 
-Export-ModuleMember -Function $Public.Basename -Alias *
