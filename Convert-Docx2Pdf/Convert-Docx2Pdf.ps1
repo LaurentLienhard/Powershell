@@ -112,8 +112,6 @@ for ($i = 1; $i -le $pages; $i += $pageLength)
     }
 
 
-
-    #$path = $outputPath + $id + ".docx"
     $path = $outputPath + $id + ".pdf"
 
     $newDoc.saveas([ref] $path, 17) 
