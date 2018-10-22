@@ -97,18 +97,11 @@ for ($i = 1; $i -le $pages; $i += $pageLength)
 
     $regex = [Regex]::Match($rngPage.Text, $fileNamePattern)
 
-    if ($regex.Success)
-    {
-
+    if ($regex.Success) {
         $id = $regex.Groups[1].Value
-
-    }
-
-    else
-    {
-
+    } 
+    else {
         $id = "patternNotFound" + $i 
-
     }
 
 
