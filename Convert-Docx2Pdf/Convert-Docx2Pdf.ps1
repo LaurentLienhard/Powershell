@@ -1,5 +1,4 @@
 function Convert-Docx2Pdf {
-    
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $False)][string]$FileNamePattern = ".*de bail.*(0\d{9})",
