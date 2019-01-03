@@ -6,8 +6,6 @@ $modulePath = Join-Path -Path $here -ChildPath \
 $moduleName = (Get-Item -Path "$here\*.psd1").BaseName
 $moduleManifest = Join-Path -Path $modulePath -ChildPath "$ModuleName.psd1"
 
-Import-Module $ModuleName
-
 Describe 'Module' {
 	Context 'Manifest' {
 		$script:manifest = $null

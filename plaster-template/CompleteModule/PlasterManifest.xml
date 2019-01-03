@@ -86,6 +86,7 @@
     <file condition='$PLASTER_PARAM_Deploy -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\Deploy\' source='' />
     <templateFile source='.\Deploy\Deploy.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\Deploy.ps1'/>
     <templateFile source='.\Deploy\launch_deploy.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\launch_deploy.ps1'/>
+	<templateFile source='.\Deploy\publish.ps1' destination='${PLASTER_PARAM_ModuleName}\Deploy\publish.ps1'/>
 
     <message> Setting build settings for: $PLASTER_PARAM_ModuleName </message>
     <file condition='$PLASTER_PARAM_Build -eq "Yes"' destination='${PLASTER_PARAM_ModuleName}\Build\' source='' />

@@ -53,12 +53,11 @@ if (Test-Path -Path $DestinationModule ) {
 }
 
 
+$PublicClass = Get-ChildItem -Path $SourceFolder -Include 'Class', 'Classe' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
 
 $PublicFunctions = Get-ChildItem -Path $SourceFolder -Include 'Public', 'External' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
 
 $PrivateFunctions = Get-ChildItem -Path $SourceFolder -Include 'Private', 'Internal' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
-
-$PublicClass = Get-ChildItem -Path $SourceFolder -Include 'Class', 'Classe' -Recurse -Directory | Get-ChildItem -Include *.ps1 -File
 
 
 Foreach ($Class in $PublicClass) {
